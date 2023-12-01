@@ -19,18 +19,25 @@ export const AuthProvider = ({children})=>{
             email,
             password
         }).then(res=>{
-            let userInfo = res.data
-            let user = userInfo.user
-            let userToken = userInfo.authorisation.token
-            setUserInfo(user)
-            setUserToken(userToken)
-            AsyncStorage.setItem('userToken', userToken)
-            AsyncStorage.setItem('userInfo', JSON.stringify(user))
-            setIsLoading(false)
+            try {
+                let userInfo = res.data
+                let user = userInfo.user
+                let userToken = userInfo.authorisation.token
+                setUserInfo(user)
+                setUserToken(userToken)
+                AsyncStorage.setItem('userToken', userToken)
+                AsyncStorage.setItem('userInfo', JSON.stringify(user))
+                setIsLoading(false)
+            } catch (error) {
+                console.log('Login Error')
+                console.log(e)
+                Alert.alert('Error de Login', 'Ocurrio un error con el login, verifique su conexion a internet o si los datos son correctos');
+                setIsLoading(false)
+            }
         }).catch(e =>{
             console.log('Login Error')
             console.log(e)
-            Alert.alert('Error de Login', e);
+            Alert.alert('Error de Login', 'Ocurrio un error en el login, verifique su conexion a internet o si los datos son correctos');
             setIsLoading(false)
         })
     }

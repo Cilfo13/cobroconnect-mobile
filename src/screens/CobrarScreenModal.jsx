@@ -84,6 +84,8 @@ const cobrarTransferencia = (id, monto, fecha, userToken, navigate, clientes, se
 }
 function formatNumber(number) {
     // Convierte la cadena formateada de Blade en un número
+    number = number.toString();
+    console.log('Numero a formatear ',number)
     const numericValue = parseFloat(number.replace(',', ''));
     // Formatea el número con separadores de miles y 2 decimales
     return numericValue.toLocaleString('es-ES', {

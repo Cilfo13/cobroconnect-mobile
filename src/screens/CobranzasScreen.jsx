@@ -17,15 +17,26 @@ const CobranzasScreen = (props)=>{
 
     //Search Bar
     const [searchQuery, setSearchQuery] = useState('')
-    const handleSearch = (query) =>{
-        //console.log(query)
-        setSearchQuery(query)
-        const formattedQuery = query.toUpperCase()
-        const filteredData = filter(clientesActuales, (cliente)=>{
-            return contains(cliente, formattedQuery)
-        })
-        setClientes(filteredData)
-    }
+
+    const [clientesFiltrados, setClientesFiltrados] = useState(clientes);
+
+    // const handleSearch = (query) =>{
+    //     //console.log(query)
+    //     setSearchQuery(query)
+    //     const formattedQuery = query.toUpperCase()
+    //     const filteredData = filter(clientesActuales, (cliente)=>{
+    //         return contains(cliente, formattedQuery)
+    //     })
+    //     setClientes(filteredData)
+    // }
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        const formattedQuery = query.toUpperCase();
+        const filteredData = filter(clientes, (cliente) => {
+          return contains(cliente, formattedQuery);
+        });
+        setClientesFiltrados(filteredData);
+      };
     const contains = (cliente, query)=>{
         //console.log(cliente)
       
@@ -36,7 +47,10 @@ const CobranzasScreen = (props)=>{
         }
         return false
     }
-    //
+    
+    useEffect(()=>{
+        setClientesFiltrados(clientes);
+    }, [clientes])
     useEffect(()=>{
         setIsLoadingClientes(true)
         const config = {
@@ -137,7 +151,7 @@ const CobranzasScreen = (props)=>{
                         }}
                     />
                     <FlatList 
-                        data={clientes}
+                        data={clientesFiltrados}
                         ItemSeparatorComponent={() => <Text></Text>}
                         renderItem={ ({ item:repo }) => (
                             <RepositoryItem {...repo} />
